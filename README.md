@@ -1,5 +1,10 @@
-# symfony_tp_note
-[Symfony] TP Noté Semaine 1 | Rémy FSD 42 
+# Author & Project
+
+Rémy Richard
+FSD 42
+
+Date : 24/11/2023
+Symfony first homework for the first week.
 
 # Fixtures
 
