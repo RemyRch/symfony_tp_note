@@ -1,0 +1,47 @@
+<nav class="bg-dark">
+	<div class="navbar navbar-expand-lg container navbar navbar-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{{ path('app.home') }}">Symfony</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" href="{{ path('app.home') }}">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+					<li class="nav-item">
+						<form class="d-flex" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn btn-outline-success" type="submit">Search</button>
+						</form>
+					</li>
+					<li class="nav-item ms-3">
+						<div class="btn-group">
+                            <img src="https://as1.ftcdn.net/v2/jpg/03/39/45/96/1000_F_339459697_XAFacNQmwnvJRqe1Fe9VOptPWMUxlZP8.jpg" aria-expanded="false" class="rounded-circle shadow-4 dropdown-toggle p-1" data-bs-toggle="dropdown" style="height: 50px; cursor: pointer;" alt="Avatar" />
+							<ul class="dropdown-menu dropdown-menu-end">
+								{% if app.user %}
+									<li class="nav-item">
+										<a href="{{ path('auth.logout') }}" class="dropdown-item">Logout</a>
+									</li>
+									{% else %}
+                                    <li class="nav-item">
+										<a href="{{ path('auth.login') }}" class="dropdown-item">Login</a>
+									</li>
+                                    <li class="nav-item">
+										<a href="{{ path('auth.register') }}" class="dropdown-item">Register</a>
+									</li>
+								{% endif %}
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</nav>
