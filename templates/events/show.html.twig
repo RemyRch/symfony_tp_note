@@ -1,0 +1,215 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event
+{% endblock %}
+{% block page %}
+	{{ event.title }}
+{% endblock %}
+
+{% block body %}
+
+
+	<section>
+
+		<a href="{{ path('events.index', { 'slug': event.category.slug }) }}" class="btn btn-primary my-3">Back to event list</a>
+
+		<div class="row">
+			<div class="col-lg-3">
+				<div class="card mb-4">
+					<div class="card-body">
+						<h2>Author</h2>
+						<hr>
+						<h5 class="my-3">{{ event.author.username }}</h5>
+						<p class="text-muted mb-1">{{ event.author.events|length }}
+							events created</p>
+						<p class="text-muted mb-1">Participated in
+							{{ event.author.participations|length }}
+							events</p>
+					</div>
+				</div>
+				{% if app.user %}
+					<div class="card mb-4 mb-lg-0 bg-transparent">
+						<div class="card-body py-3">
+							<div class="d-flex justify-content-center">
+								{% if app.user == event.author or is_granted('ROLE_ADMIN') %}
+									<div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</div>
+									<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog modal-xl">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">Create new event</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{{ form_start(eventForm, {'attr': {'id': 'new-event'}}) }}
+													{{ form_row(eventForm.category) }}
+													{{ form_row(eventForm.title) }}
+													{{ form_row(eventForm.description) }}
+													{{ form_row(eventForm.address) }}
+													<div class="row">
+														<div class="col-9">
+															{{ form_row(eventForm.city) }}
+														</div>
+														<div class="col-3">
+															{{ form_row(eventForm.postalCode) }}
+														</div>
+													</div>
+													{{ form_widget(eventForm) }}
+													{{ form_end(eventForm) }}
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+													<button type="submit" form="new-event" class="btn btn-primary">Edit this event</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<a href="{{ path('events.delete', { 'slug': event.slug }) }}" class="btn btn-danger ms-1">Delete</a>
+									{% if is_granted('ROLE_ADMIN') %}
+										{% if app.user in event.participants %}
+											<a href="{{ path('events.participate', { 'slug': event.slug }) }}" class="btn btn-secondary ms-1">Participating</a>
+										{% else %}
+											<a href="{{ path('events.participate', { 'slug': event.slug }) }}" class="btn btn-outline-secondary ms-1">Participate</a>
+										{% endif %}
+									{% endif %}
+								{% else %}
+									{% if app.user in event.participants %}
+										<a href="{{ path('events.participate', { 'slug': event.slug }) }}" class="btn btn-secondary ms-1">Participating</a>
+									{% else %}
+										<a href="{{ path('events.participate', { 'slug': event.slug }) }}" class="btn btn-outline-secondary ms-1">Participate</a>
+									{% endif %}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+			<div class="col-lg-6">
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Title</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.title }}</p>
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Description</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.description|nl2br }}</p>
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Address</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.address }},
+									{{ event.city }}
+									-
+									{{ event.postalCode }}</p>
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Created At</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.createdAt|date() }}</p>
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Last update At</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.updatedAt|date() }}</p>
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Starting at</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.startingAt|date() }}</p>
+							</div>
+						</div>
+						<hr>
+						<div class="row">
+							<div class="col-sm-3">
+								<p class="mb-0">Ending At</p>
+							</div>
+							<div class="col-sm-9">
+								<p class="text-muted mb-0">{{ event.endingAt|date() }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card mb-4 p-2">
+					<div class="card-body">
+						<h2>Comments</h2>
+						{% if app.user %}
+							{{ form_start(newCommentForm, {'attr': {'id': 'new-comment'}}) }}
+							{{ form_widget(newCommentForm) }}
+							{{ form_end(newCommentForm) }}
+						{% else %}
+							<div class="alert alert-primary" role="alert">
+								You need to be logged in to comment
+							</div>
+						{% endif %}
+						<hr>
+						{% for index, comment in event.comments %}
+							<div class="card p-2 text-dark mt-3 border-0">
+								<h3 class="h5">{{ comment.author.username }}</h3>
+								<h6>
+									{% if comment.author == event.author %}
+										<span class="badge bg-info">Author</span>
+									{% endif %}
+									{% if comment.author in event.participants %}
+										<span class="badge bg-secondary">Participant</span>
+									{% endif %}
+									{% if 'ROLE_ADMIN' in comment.author.roles %}
+										<span class="badge bg-danger">Administrator</span>
+									{% endif %}
+								</h6>
+								<p>{{ comment.content }}</p>
+								<span class="text-muted">{{ comment.createdAt|date() }}</span>
+							</div>
+							{% if index != 0 %}
+								<hr>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card mb-4 mb-md-0">
+							<div class="card-body">
+								<h2 class="mb-4">Participants ({{ event.participants|length }})</h2>
+								<ul class="list-group">
+									{% for participant in event.participants %}
+										<li class="list-group-item">{{ participant.username }}</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</section>
+
+{% endblock %}

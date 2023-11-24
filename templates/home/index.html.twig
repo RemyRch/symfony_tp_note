@@ -1,6 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Home
+{% endblock %}
+{% block page %}Home
+{% endblock %}
 
 {% block body %}
+	<div class="row">
+		<h2>{{ events|length }}
+			last events</h2>
+		{% for event in events %}
+			{% include 'components/event_card.html.twig' with { event: event } %}
+		{% endfor %}
+	</div>
 {% endblock %}

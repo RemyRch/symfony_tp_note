@@ -1,0 +1,42 @@
+<div class="card mb-3">
+	<div class="card-body">
+		<h5 class="card-title">
+			{% if app.user == event.author %}
+			<span class="text-primary">[Author]</span>
+			{% endif %}
+			<span class="text-info">[{{ event.category.title }}]</span>
+			-
+			{{ event.title }}</h5>
+		<p class="card-text">{{ event.description|length > 100 ? event.description|slice(0, 100) ~ '...' : event.description }}</p>
+		<div class="d-flex justify-content-between align-items-end">
+			<div class="links">
+				<a href="{{ path('events.event', { 'slug': event.slug }) }}" class="btn btn-primary card-link">See event</a>
+				{% if app.user %}
+					{% if app.user in event.participants %}
+						<a href="{{ path('events.participate', { 'slug': event.slug }) }}" class="btn btn-secondary ms-1">Participating
+							<i class="fa-solid fa-check"></i>
+						</i>
+					</a>
+				{% else %}
+					{% if app.user != event.author %}
+						<a href="{{ path('events.participate', { 'slug': event.slug }) }}" class="btn btn-outline-secondary ms-1">Participate</a>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		</div>
+		<div class="informations text-muted">
+			<div class="location">
+				<i class="fa-solid fa-location-crosshairs"></i>
+				<span>{{ event.city }}, {{ event.postalCode }}</span>
+			</div>
+			<div class="starting">
+                <i class="fa-solid fa-play"></i>
+                <span>{{ event.startingAt|date() }}</span>
+            </div>
+            <div class="starting">
+                <i class="fa-solid fa-flag-checkered"></i>
+                <span>{{ event.endingAt|date() }}</span>
+            </div>
+		</div>
+	</div>
+</div></div>

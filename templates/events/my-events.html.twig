@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My events
+{% endblock %}
+{% block page %}My events
+{% endblock %}
+
+{% block body %}
+	<div class="d-flex justify-content-end my-3">
+		<div class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create new event</div>
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-xl">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Create new event</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						{{ form_start(newEventForm, {'attr': {'id': 'new-event'}}) }}
+						{{ form_row(newEventForm.category) }}
+						{{ form_row(newEventForm.title) }}
+						{{ form_row(newEventForm.description) }}
+						{{ form_row(newEventForm.address) }}
+						<div class="row">
+							<div class="col-9">
+								{{ form_row(newEventForm.city) }}
+							</div>
+							<div class="col-3">
+								{{ form_row(newEventForm.postalCode) }}
+							</div>
+						</div>
+						{{ form_widget(newEventForm) }}
+						{{ form_end(newEventForm) }}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" form="new-event" class="btn btn-primary">Create new event</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Title</th>
+				<th scope="col">Description</th>
+				<th scope="col">Starting at</th>
+				<th scope="col">Endingting at</th>
+				<th scope="col">Participants</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for event in events %}
+				<tr>
+					<td>{{ event.title }}</td>
+					<td>{{ event.description|length > 50 ? event.description|slice(0, 50) ~ '...' : event.description }}</td>
+					<td>{{ event.startingAt|date() }}</td>
+					<td>{{ event.endingAt|date() }}</td>
+					<td>{{ event.participants|length }}</td>
+					<td>
+						<a href="{{ path('events.event', { slug: event.slug }) }}">See event</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

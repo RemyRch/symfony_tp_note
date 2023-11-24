@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My account
+{% endblock %}
+{% block page %}My account
+{% endblock %}
+
+{% block body %}
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<button class="nav-link {{ tab == "general" ? "active" : null }}" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab" aria-controls="general" aria-selected="true">General</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link {{ tab == "security" ? "active" : null }}" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab" aria-controls="security" aria-selected="false">Security</button>
+		</li>
+	</ul>
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane fade {{ tab == "general" ? "show active" : null }} py-3" id="general" role="tabpanel" aria-labelledby="general-tab">
+			{% include 'profile/tabs/_general.html.twig' %}
+		</div>
+		<div class="tab-pane fade {{ tab == "security" ? "show active" : null }} py-3" id="security" role="tabpanel" aria-labelledby="security-tab">
+			{% include 'profile/tabs/_security.html.twig' %}
+		</div>
+	</div>
+{% endblock %}

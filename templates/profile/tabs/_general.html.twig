@@ -1,0 +1,7 @@
+<div class="mb-3">
+	<label for="disabled_email" class="form-label">Email</label>
+    <input type="email" id="disabled_email" name="disabled_email" class="form-control" disabled value="{{ app.user.email }}">
+</div>
+{{ form_start(generalForm) }}
+{{ form_widget(generalForm) }}
+{{ form_end(generalForm) }}

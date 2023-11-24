@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categories
+{% endblock %}
+{% block page %}Categories
+{% endblock %}
+
+{% block body %}
+
+	<div class="row">
+		{% for category in categories %}
+			<div class="card mb-3">
+				<div class="card-body d-flex justify-content-between align-items-center">
+					<h4 class="card-title mb-4">{{ category.title }}</h4>
+					<a href="{{ path('events.index', { 'slug': category.slug }) }}" class="btn btn-primary card-link">See events of this category</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}

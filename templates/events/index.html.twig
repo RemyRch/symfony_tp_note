@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events
+{% endblock %}
+{% block page %}Events -
+	{{ category.title }}
+{% endblock %}
+
+{% block body %}
+
+	<a href="{{ path('events.index') }}" class="btn btn-primary mb-3">Back to categories</a>
+
+	<div class="row">
+		{% for event in events %}
+			{% include 'components/event_card.html.twig' with { event: event } %}
+		{% endfor %}
+		{% if pages != 0 %}
+			<nav aria-label="Page navigation example" class="d-flex justify-content-center mt-5">
+				<ul class="pagination">
+					<li class="page-item {{ page == 1 ? 'disabled' : null }}">
+						<a class="page-link" href="{{ path('events.index', { 'p': page - 1, 'slug': category.slug }) }} ">Previous</a>
+					</li>
+					{% for i in max(1, (page - 2))..min(page + 2, pages) %}
+						<li class="page-item {{ page == i ? " active" : " " }}">
+							<a class="page-link" href="{{ path('events.index', { 'p': i, 'slug': category.slug }) }} ">{{ i }}</a>
+						</li>
+					{% endfor %}
+					<li class="page-item {{ page == pages ? 'disabled' : null }}">
+						<a class="page-link" href="{{ path('events.index', { 'p': page + 1, 'slug': category.slug }) }} ">Next</a>
+					</li>
+				</ul>
+			</nav>
+		{% endif %}
+	</div>
+
+{% endblock %}

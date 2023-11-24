@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Participations
+{% endblock %}
+{% block page %}My Participations
+{% endblock %}
+
+{% block body %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Title</th>
+				<th scope="col">Description</th>
+				<th scope="col">Starting at</th>
+				<th scope="col">Endingting at</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for event in events %}
+				<tr>
+					<td>{{ event.title }}</td>
+					<td>{{ event.description|length > 50 ? event.description|slice(0, 50) ~ '...' : event.description }}</td>
+					<td>{{ event.startingAt|date() }}</td>
+					<td>{{ event.endingAt|date() }}</td>
+					<td>
+						<a href="{{ path('events.event', { slug: event.slug }) }}">See event</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
