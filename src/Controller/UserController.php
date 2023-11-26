@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Media;
+use App\Form\MediaFormType;
 use App\Form\UserGeneralFormType;
 use App\Form\UserSecurityFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -62,9 +64,21 @@ class UserController extends AbstractController
             return $this->redirect($route);
         }
 
+        /** Picture form */
+        $media = new Media();
+        $pictureForm = $this->createForm(MediaFormType::class, $media);
+        $pictureForm->handleRequest($request);
+        if($pictureForm->isSubmitted() && $pictureForm->isValid()){
+            $user->setProfilePicture($media);
+            $this->em->persist($user);
+            $this->em->flush();
+            return $this->redirect($route);
+        }
+
         return $this->render('profile/index.html.twig', [
             'generalForm' => $generalForm->createView(),
             'securityForm' => $securityForm->createView(),
+            'pictureForm' => $pictureForm->createView(),
             'tab' => $request->query->get('tab') ?? "general",
         ]);
     }
